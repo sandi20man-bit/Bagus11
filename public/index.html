@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chat Avatar</title>
+  </head>
+  <body>
+    <h2>Chat dengan Avatar</h2>
+    <input id="msg" placeholder="Ketik pesan..." />
+    <button onclick="send()">Kirim</button>
+    <div id="reply"></div>
+    <video id="avatar" width="400" controls autoplay></video>
+
+    <script>
+      async function send() {
+        const msg = document.getElementById("msg").value;
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: msg }),
+        });
+        const data = await res.json();
+        document.getElementById("reply").innerText = data.reply;
+        document.getElementById("avatar").src = data.video;
+      }
+    </script>
+  </body>
+</html>
